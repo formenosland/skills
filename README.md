@@ -33,10 +33,10 @@ To trigger a skill manually, type its slash command (e.g. `/terse`). Otherwise, 
 
 | Skill | Invocation | Description | Credits |
 | --- | --- | --- | --- |
-| [code-review](./code-review/SKILL.md) | `/code-review` | Orchestrated review of a PR, commit, branch, or diff against team standards. Model-invoked when you ask for a review; `/code-review` forces it. | - |
-| [terse](./terse/SKILL.md) | `/terse` | Ultra-compressed communication mode. Strips filler, drops articles and pleasantries, and keeps technical terms exact — while leaving code, commits, and PR descriptions untouched. | Inspired by [caveman](https://github.com/JuliusBrussee/caveman) but compressed and without the bloat |
-| [conventional-commit](./conventional-commit/SKILL.md) | `/conventional-commit` | How the agent writes git commits: Conventional Commits 1.0.0 message shape, types, breaking changes, and a safe commit workflow. | [Conventional Commits 1.0.0](https://www.conventionalcommits.org/en/v1.0.0/) |
-| [five-whys](./five-whys/SKILL.md) | `/five-whys` | Cheap causal gate: find the job or root cause behind a desire, imperative, or prescription ("I need", "I want", "add X", "use Y") before implementing. Model-invoked; `/five-whys` forces it. | Toyota-style 5 Whys; complementary to [grill-me](https://www.aihero.dev/skills-grill-me) by Matt Pocock |
+| [code-review](./skills/code-review/SKILL.md) | `/code-review` | Orchestrated review of a PR, commit, branch, or diff against team standards. Model-invoked when you ask for a review; `/code-review` forces it. | - |
+| [terse](./skills/terse/SKILL.md) | `/terse` | Ultra-compressed communication mode. Strips filler, drops articles and pleasantries, and keeps technical terms exact — while leaving code, commits, and PR descriptions untouched. | Inspired by [caveman](https://github.com/JuliusBrussee/caveman) but compressed and without the bloat |
+| [conventional-commit](./skills/conventional-commit/SKILL.md) | `/conventional-commit` | How the agent writes git commits: Conventional Commits 1.0.0 message shape, types, breaking changes, and a safe commit workflow. | [Conventional Commits 1.0.0](https://www.conventionalcommits.org/en/v1.0.0/) |
+| [five-whys](./skills/five-whys/SKILL.md) | `/five-whys` | Cheap causal gate: find the job or root cause behind a desire, imperative, or prescription ("I need", "I want", "add X", "use Y") before implementing. Model-invoked; `/five-whys` forces it. | Toyota-style 5 Whys; complementary to [grill-me](https://www.aihero.dev/skills-grill-me) by Matt Pocock |
 
 ## Contributing
 
