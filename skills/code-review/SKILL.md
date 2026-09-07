@@ -56,7 +56,7 @@ IDs (`B1`, `S1`, …) are for `apply B1`. They do not appear in the final summar
 
 **Small-diff exception:** fewer than 3 routing refs **and** fewer than 8 files — orchestrator may review and apply inline. Spawn overhead can exceed the work.
 
-**Gate** (full tests + typecheck + lint) runs in the last apply/fallout worker. This thread gets pass/fail. A failing check from our edit is a regression: the apply worker fixes it. Do not claim Ready if the gate fails.
+**Gate** runs **last**, after every apply and fallout patch, **before** the final summary. Discover and run what *this repo* uses to keep CI green — not a generic `npm test`. See **CI gate**. This thread gets pass/fail. A failing check from our edit is a regression: fix it, re-run the gate. Do not claim Ready if the gate fails.
 
 ## Methodology (R1)
 
@@ -278,9 +278,25 @@ Do not start another **review** when:
 - Same fingerprint survived a fix attempt
 - Cap: R1 + F1 + optional F2
 
-The cap does not stop apply of remaining clear blockers. Then gate. Open = skips, stalled, gate fail. A product-rule gap is a **Product call**, not Open.
+The cap does not stop apply of remaining clear blockers. Then **CI gate**. Open = skips, stalled, gate fail. A product-rule gap is a **Product call**, not Open.
 
-**Ready** = F1 clean of blockers **or** F2 ran, its blockers were applied, gate green, **and no Product call**. Not “zero should-fix forever.” An unanswered Product call → Not ready.
+**Ready** = F1 clean of blockers **or** F2 ran, its blockers were applied, **CI gate green**, **and no Product call**. Not “zero should-fix forever.” An unanswered Product call → Not ready.
+
+## CI gate
+
+Run this **once, at the very end**, after the last apply/fallout edit and **before** emitting `Review complete`. Skip only if this thread made **no** file edits (R1 LGTM / discuss-only).
+
+**Discover** the project's own commands — Makefile, `justfile`, `package.json` scripts, `vp` / `mise` tasks, CI workflow (`.github/workflows`), README. Prefer the repo wrapper (`vp fmt`, `make lint`, `pnpm check`) over inventing `npx prettier`.
+
+**Order:**
+
+1. **Mutating protectors** that CI will fail without: formatters and auto-fixers (`vp fmt`, `vp lint-fix`, `make fmt`, `ruff format`, `cargo fmt`, …). Run them so the tree matches what CI expects.
+2. **Verify:** lint (non-fix if distinct), typecheck, tests — whatever CI runs on PRs. Same wrappers.
+3. Failures from **our** edits → fix, re-run from step 1. Pre-existing red on files we did not touch → Open (gate), do not claim Ready.
+
+Do not skip format because “the logic is fine.” CI format/lint jobs fail the PR.
+
+Gate line in the summary names the commands that ran, not a generic “tests + lint.”
 
 ## Final summary — exact
 
@@ -300,7 +316,7 @@ Judgment: **Not ready** if a Product call exists, even when the gate is green. L
 <One-line judgment. Not ready if Product call is present.>
 
 Loop: <what happened in one clause>
-Gate: tests + typecheck + lint pass|fail
+Gate: <commands that ran> pass|fail
 
 ### Applied
 - <what was wrong → what we did>
@@ -335,7 +351,7 @@ Example (product call from fallout):
 Not ready: product call on last-owner vs offboard. Gate green.
 
 Loop: R1 applied; fallout found last-owner vs offboard (not applied)
-Gate: tests + typecheck + lint pass
+Gate: vp fmt, vp lint-fix, tests + typecheck pass
 
 ### Applied
 - Member and admin pickers no longer list offboarded users
