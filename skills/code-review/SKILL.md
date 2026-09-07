@@ -212,7 +212,7 @@ Unsure? _If this ships badly, is the fix a 5-line patch or a multi-week migratio
 
 1. **Order:** schema → queries → domain logic → API → UI → tests.
 2. **Per item:** edit; add or extend a test that **fails if this patch is reverted**; AuthZ tests need a **sibling row** (unit B / other office) that must stay hidden — deny-all `[]` is not enough; run that test + narrowest typecheck/lint, not the full suite per item. Cannot write the test → Open. Check failed because of our edit → fix the regression. Ask only on a product-rule conflict.
-3. Return applied/open in English for the orchestrator summary. Fallout finds: prefix `Found after apply:` at summary time.
+3. Return applied/open in English for the orchestrator summary. Fallout we **fixed**: prefix `Found after apply:` under Applied. Fallout that needs a product rule: **Product call** only — never an Applied bullet.
 
 `discuss` / `explain`: this thread, no edits, no full plan re-emit.
 
@@ -256,7 +256,7 @@ Same defect already applied → drop (stagnation if a fix was already attempted)
 
 Without asking: regressions from our edits; unambiguous blockers; missing/weak indexes for queries this diff introduces; F1 mechanical should-fix that is a six-questions miss on patched paths (not a new standards hunt).
 
-Must ask: schema/API/product/security tradeoffs not in approved R1 items (except indexes); two fixes that **change product behavior** (if both preserve the documented invariant, pick the smaller); Questions.
+Must ask: schema/API/product/security tradeoffs not in approved R1 items (except indexes); two fixes that **change product behavior** (if both preserve the documented invariant, pick the smaller); Questions. Those go in **Product call**, not Applied. Do not bury them in Loop or in a `Found after apply:` bullet.
 
 Must not apply: git hygiene unless asked; restated prior decisions; nits; new Fowler/standards lists.
 
@@ -278,51 +278,87 @@ Do not start another **review** when:
 - Same fingerprint survived a fix attempt
 - Cap: R1 + F1 + optional F2
 
-The cap does not stop apply of remaining clear blockers. Then gate. Open = questions, user skips, stagnation.
+The cap does not stop apply of remaining clear blockers. Then gate. Open = skips, stalled, gate fail. A product-rule gap is a **Product call**, not Open.
 
-**Ready** = F1 clean of blockers **or** F2 ran, its blockers were applied, gate green. Not “zero should-fix forever.” Questions still open → Not ready.
+**Ready** = F1 clean of blockers **or** F2 ran, its blockers were applied, gate green, **and no Product call**. Not “zero should-fix forever.” An unanswered Product call → Not ready.
 
 ## Final summary — exact
 
 Only this. English. No IDs. No round ledger.
 
+Judgment: **Not ready** if a Product call exists, even when the gate is green. Loop is one clause (what ran); it does not narrate the tradeoff.
+
+**Applied** = what we changed. Fallout we *fixed* may start with `Found after apply:`. Fallout we *could not* fix because it needs a product rule must **not** appear here.
+
+**Open** = skip / stalled / gate. Not product questions.
+
+**Product call** = last section when a product rule is required to close. Omit if none. Must name the failure, why each naive fix is wrong, the options, and that the review stays gated until the user picks.
+
 ```
 ## Review complete — <title>
 
-<One-line judgment.>
+<One-line judgment. Not ready if Product call is present.>
 
 Loop: <what happened in one clause>
 Gate: tests + typecheck + lint pass|fail
 
 ### Applied
-- <what was wrong → what we did. Fallout lines start with "Found after apply:">
+- <what was wrong → what we did>
+- Found after apply: <regression we then fixed>
 
 ### Open
-- <unresolved and why: question / skip / stalled / gate>
+- <skip / stalled / gate only>
   (omit if nothing)
 
 ### Skipped
 - <only what the user skipped at R1>
   (omit if none)
+
+### Product call
+Gated — review cannot close until you pick a rule.
+
+<What a user hits today.>
+Naive fix A fails because …
+Naive fix B fails because …
+Options:
+1. <rule>
+2. <rule>
+
+Reply with `1` or `2` (or a third rule). Then we apply and re-gate.
 ```
 
-Example:
+Example (product call from fallout):
 
 ```
-## Review complete — consent re-enroll
+## Review complete — feat/replace-firebase-by-better-auth
 
-Not ready: need a call on archived consents. Gate green.
+Not ready: product call on last-owner vs offboard. Gate green.
 
-Loop: R1 applied, fallout caught a race on the history fix
+Loop: R1 applied; fallout found last-owner vs offboard (not applied)
 Gate: tests + typecheck + lint pass
 
 ### Applied
-- Re-enroll no longer clears consent history
-- GET /widgets no longer writes
-- Found after apply: consent write raced after the history fix; now one statement
+- Member and admin pickers no longer list offboarded users
+- Anonymize drops sessions, wipes account tokens, and uses unique emails
+- Offboard deletes set-password rows with the user
+- Session token / verification / account uniqueness comments on the Prisma models
+- Set-password consume uses the database clock
+- Sign-in 401 after mint now asserts session revoke
+- Auth rate-limit keying and 429 body are unit-tested
 
-### Open
-- Should archived consents stay readable after re-enroll? Fixing that would guess a product rule.
+### Product call
+Gated — review cannot close until you pick a rule.
+
+Offboard a last owner: membership 403s as “last owner” while the member list shows nobody to demote (soft-deleted owner still counted).
+
+Filtering owner ids to live users only lets the last live owner be removed while the ghost owner role remains.
+Dropping the owner role on offboard without a successor can leave the org with no owner.
+
+Options:
+1. Offboard drops or reassigns owner so a live owner always remains
+2. Last-owner counts live owners only, and offboard is refused unless a live owner remains
+
+Reply with `1` or `2` (or a third rule). Then we apply and re-gate.
 ```
 
 ## When the diff isn't provided
