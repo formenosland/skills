@@ -24,7 +24,7 @@ Stop at the first rung that holds. Climb only after you have read the task and t
 6. Can it be one line? One line.
 7. Only then: the minimum that works.
 
-Two rungs work → take the higher one. Smallest diff in the wrong place is a second bug, not lean.
+Two rungs work → take the higher one. Smallest diff in the wrong place is a second bug, not lean. Next rung is a new package, new folder, or a second public API → you skipped a higher rung.
 
 Bug fix = root cause. Grep every caller of the function you touch. One guard in the shared function beats a guard per caller.
 
@@ -35,6 +35,10 @@ Bug fix = root cause. Grep every caller of the function you touch. One guard in 
 - Deletion over addition. Boring over clever. Fewest files.
 - Two stdlib options, same size → the one that is correct on edge cases.
 - User asks for the full version after a skip → build it, no re-arguing.
+- Duplicate twice; extract on the third copy. A new helper for two similar blocks is not lean. Exception: one shared bug-fix path (above).
+- Match the simplest existing pattern that already works for this seam, not the most layered neighboring file.
+- Only files the task needs. No drive-by refactors, extra params, flags, retries, metrics, or "while here" comments.
+- No new Service/Manager/Helper/Util/Adapter/interface unless this repo already uses that unit for this seam.
 
 ## Do not cut
 
@@ -50,6 +54,9 @@ Code first. Then at most one line: `skipped: [X], add when [Y].`
 
 Unrequested essays are complexity as prose. A report or walkthrough they asked for is not.
 
-Example: "Add a cache for these API responses."
+Examples:
 
-- `@lru_cache(maxsize=1000)` on the fetch. `skipped: custom cache class, add when lru_cache measurably falls short.`
+- "Add a cache for these API responses." → `@lru_cache(maxsize=1000)` on the fetch. `skipped: custom cache class, add when lru_cache measurably falls short.`
+- "Add a date picker." → `<input type="date">`. `skipped: picker lib, add when native input is not enough.`
+- "These two blocks are similar, extract a helper." → leave both. `skipped: helper, add when a third copy appears.`
+- Nearby `FooService` + interface, feature needs a call. → call the function this seam already uses. `skipped: sibling service, add when this seam already is that layer.`
