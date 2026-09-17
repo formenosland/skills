@@ -8,13 +8,20 @@ These skills are designed to be small, easy to adapt, and composable. They work 
 
 ## Quickstart (30-second setup)
 
-1. Run the skills.sh installer:
+1. Install [skillsync](https://github.com/formenosland/skillsync):
 
-```bash
-npx skills@latest add formenosland/skills
+```sh
+brew install formenosland/tap/skillsync
 ```
 
-2. Pick the skills you want, and which coding agents you want to install them on.
+```
+
+2. Link your agents and add this catalog:
+
+```sh
+skillsync init
+skillsync add formenosland/skills
+```
 
 3. That's it — you're ready to go.
 
@@ -31,13 +38,25 @@ To trigger a skill manually, type its slash command (e.g. `/terse`). Otherwise, 
 
 ## Reference
 
+### Engineering
+
 | Skill | Invocation | Description | Credits |
 | --- | --- | --- | --- |
-| [code-review](./skills/code-review/SKILL.md) | `/code-review` | Orchestrated review of a PR, commit, branch, or diff against team standards. Model-invoked when you ask for a review; `/code-review` forces it. | - |
-| [terse](./skills/terse/SKILL.md) | `/terse` | Ultra-compressed communication mode. Strips filler, drops articles and pleasantries, and keeps technical terms exact — while leaving code, commits, and PR descriptions untouched. | Inspired by [caveman](https://github.com/JuliusBrussee/caveman) but compressed and without the bloat |
-| [conventional-commit](./skills/conventional-commit/SKILL.md) | `/conventional-commit` | How the agent writes git commits: Conventional Commits 1.0.0 message shape, types, breaking changes, and a safe commit workflow. | [Conventional Commits 1.0.0](https://www.conventionalcommits.org/en/v1.0.0/) |
-| [five-whys](./skills/five-whys/SKILL.md) | `/five-whys` | Cheap causal gate: find the job or root cause behind a desire, imperative, or prescription ("I need", "I want", "add X", "use Y") before implementing. Model-invoked; `/five-whys` forces it. | Toyota-style 5 Whys; complementary to [grill-me](https://www.aihero.dev/skills-grill-me) by Matt Pocock |
-| [lean](./skills/lean/SKILL.md) | `/lean` | Smallest working implementation: YAGNI, reuse, stdlib, native, existing deps, then the minimum. Model-invoked on implement/scaffold/new-dep work; `/lean` forces it. | Adapted from [ponytail](https://github.com/DietrichGebert/ponytail) (ladder only; no plugin, modes, or extra skills) |
+| [code-review](./skills/engineering/code-review/SKILL.md) | `/code-review` | Orchestrated review of a PR, commit, branch, or diff against team standards. Model-invoked when you ask for a review; `/code-review` forces it. | - |
+| [conventional-commit](./skills/engineering/conventional-commit/SKILL.md) | `/conventional-commit` | How the agent writes git commits: Conventional Commits 1.0.0 message shape, types, breaking changes, and a safe commit workflow. | [Conventional Commits 1.0.0](https://www.conventionalcommits.org/en/v1.0.0/) |
+| [lean](./skills/engineering/lean/SKILL.md) | `/lean` | Smallest working implementation: YAGNI, reuse, stdlib, native, existing deps, then the minimum. Model-invoked on implement/scaffold/new-dep work; `/lean` forces it. | Adapted from [ponytail](https://github.com/DietrichGebert/ponytail) (ladder only; no plugin, modes, or extra skills) |
+
+### Product
+
+| Skill | Invocation | Description | Credits |
+| --- | --- | --- | --- |
+| [five-whys](./skills/product/five-whys/SKILL.md) | `/five-whys` | Cheap causal gate: find the job or root cause behind a desire, imperative, or prescription ("I need", "I want", "add X", "use Y") before implementing. Model-invoked; `/five-whys` forces it. | Toyota-style 5 Whys; complementary to [grill-me](https://www.aihero.dev/skills-grill-me) by Matt Pocock |
+
+### Productivity
+
+| Skill | Invocation | Description | Credits |
+| --- | --- | --- | --- |
+| [terse](./skills/productivity/terse/SKILL.md) | `/terse` | Ultra-compressed communication mode. Strips filler, drops articles and pleasantries, and keeps technical terms exact — while leaving code, commits, and PR descriptions untouched. | Inspired by [caveman](https://github.com/JuliusBrussee/caveman) but compressed and without the bloat |
 
 ## Contributing
 
