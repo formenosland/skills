@@ -45,6 +45,7 @@ To trigger a skill manually, type its slash command (e.g. `/terse`). Otherwise, 
 | [code-review](./skills/engineering/code-review/SKILL.md) | `/code-review` | Orchestrated review of a PR, commit, branch, or diff against team standards. Model-invoked when you ask for a review; `/code-review` forces it. | - |
 | [conventional-commit](./skills/engineering/conventional-commit/SKILL.md) | `/conventional-commit` | How the agent writes git commits: Conventional Commits 1.0.0 message shape, types, breaking changes, and a safe commit workflow. | [Conventional Commits 1.0.0](https://www.conventionalcommits.org/en/v1.0.0/) |
 | [lean](./skills/engineering/lean/SKILL.md) | `/lean` | Smallest working implementation: YAGNI, reuse, stdlib, native, existing deps, then the minimum. Model-invoked on implement/scaffold/new-dep work; `/lean` forces it. | Adapted from [ponytail](https://github.com/DietrichGebert/ponytail) (ladder only; no plugin, modes, or extra skills) |
+| [twelve-factor](./skills/engineering/twelve-factor/SKILL.md) | `/twelve-factor` | Twelve-Factor App way of thinking for a deployable app or SaaS (config, processes, logs, backing services, build/release/run). Model-invoked when designing, implementing, reviewing, or refactoring a service; `/twelve-factor` forces all twelve principles. | [The Twelve-Factor App](https://12factor.net/) |
 
 ### Product
 
