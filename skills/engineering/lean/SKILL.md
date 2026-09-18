@@ -1,7 +1,7 @@
 ---
 name: lean
 description: >
-  Smallest working code: YAGNI, reuse this repo, stdlib, native platform, already-installed deps, then one line, then the minimum. Use when implementing, adding a feature, fixing a bug, scaffolding, adding a dependency, wrapping a library, or when the change might overbuild. Also "lean", "yagni", "don't over-engineer", or /lean. Do not use for talk-style-only requests, interviews about whether to build, or commit/PR/review orchestration.
+  Smallest working code: YAGNI, reuse this repo, stdlib, native platform, already-installed deps, then one line, then the minimum. Use when implementing, adding a feature, fixing a bug, scaffolding, adding a dependency, wrapping a library, or when the change might overbuild. Also comments, JSDoc, or unsolicited markdown in the tree; "lean", "yagni", "don't over-engineer", or /lean. Do not use for talk-style-only requests, interviews about whether to build, or commit/PR/review orchestration.
 ---
 
 # Lean
@@ -40,9 +40,13 @@ Bug fix = root cause. Grep every caller of the function you touch. One guard in 
 - Only files the task needs. No drive-by refactors, extra params, flags, retries, metrics, or "while here" comments.
 - No new Service/Manager/Helper/Util/Adapter/interface unless this repo already uses that unit for this seam.
 
+## Prose in the tree
+
+A comment at the owner names a surprising *invariant* in **one line** (dual-read, fail-open, two ID spaces). Names, types, tests, and git carry what changed. An existing group label (`// skipped outcomes (noop)`) stays one line; it is not a license to paragraph every variant. Markdown, JSDoc, and module banners only when asked or this seam already uses that form (public API, OpenAPI, skill files). Requested docs, CONTEXT.md, and ADRs in scope stay.
+
 ## Do not cut
 
-Input validation at trust boundaries, error handling that prevents data loss, security, accessibility basics, calibration real hardware needs, anything explicitly requested.
+Input validation at trust boundaries, error handling that prevents data loss, security, accessibility basics, calibration real hardware needs, anything explicitly requested. A one-line invariant at the owner stays.
 
 Never lean about understanding. Trace the flow first.
 
@@ -60,3 +64,4 @@ Examples:
 - "Add a date picker." → `<input type="date">`. `skipped: picker lib, add when native input is not enough.`
 - "These two blocks are similar, extract a helper." → leave both. `skipped: helper, add when a third copy appears.`
 - Nearby `FooService` + interface, feature needs a call. → call the function this seam already uses. `skipped: sibling service, add when this seam already is that layer.`
+- Dual-read enum member. → one line at the owner: reason `posted_partial` is dual-read; new writes use outcome `posted_partial` plus a real reason. `skipped: changelog comments and sibling-code lists.`
