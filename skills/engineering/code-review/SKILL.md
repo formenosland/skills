@@ -75,7 +75,9 @@ Trace one full read and one full write: DB → repo → service → route → cl
 
 ### Document the why
 
-A surprising invariant with no comment at the owner (query, route, middleware) is a should-fix. Unknowable from the diff → Question. The apply **is** one line at the owner naming the invariant (plus any code they asked for) — not a changelog, restated signature, or JSDoc that repeats types.
+A surprising invariant with no comment at the owner (query, route, middleware) is a should-fix. Unknowable from the diff → Question. The apply for a Question answer **is** that comment (plus any code they asked for).
+
+Net-new comment lines are a should-fix unless the invariant was previously unstated and the comment is one line. Lengthening a comment that already stated the why, a second sentence of vendor documentation, a punctuation-only comment edit, and a comment-only hunk are that finding. Do not ask for a paragraph.
 
 Surprising: global vs unit scope, fail-open, two ID spaces, capability vs visibility. Examples: `claim_actions` keyed by `payer_claim_control_number` so a canonical remittance can switch; `GET /organization-units` listing every office for members on purpose.
 
