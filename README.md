@@ -58,6 +58,7 @@ To trigger a skill manually, type its slash command (e.g. `/terse`). Otherwise, 
 | Skill | Invocation | Description | Credits |
 | --- | --- | --- | --- |
 | [terse](./skills/productivity/terse/SKILL.md) | `/terse` | Ultra-compressed communication mode. Strips filler, drops articles and pleasantries, and keeps technical terms exact — while leaving code, commits, and PR descriptions untouched. | Inspired by [caveman](https://github.com/JuliusBrussee/caveman) but compressed and without the bloat |
+| [shadow](./skills/productivity/shadow/SKILL.md) | `/shadow` | Build or consult a shadow: a compiled procedure of how a person thinks, kept current from the sources you can reach. User-invoked. | Inspired by the shadows in the Silo series |
 
 ## Contributing
 
